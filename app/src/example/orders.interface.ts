@@ -1,45 +1,45 @@
-export default interface Order {
-    id: string;
-    packages: Package[]
-    contact: Contact[]
-    carrier: Carrier[]
+export default interface IOrder {
+    id: number
+    packages: IPackage[]
+    contact: IContact[]
+    carrier: ICarrier[]
 }
 
-interface Package {
-    length: Measure[]
-    width: Measure[]
-    height: Measure[]
-    weight: Measure[]
-    products: Products[]
+interface IPackage {
+    length: IMeasure[]
+    width: IMeasure[]
+    height: IMeasure[]
+    weight: IMeasure[]
+    products: IProducts[]
 }
 
-interface Measure {
+interface IMeasure {
     unit: string
     value: number
 }
-interface Products {
+interface IProducts {
     quantity: number
     label: string
     ean: string
 }
 
-interface Contact {
+interface IContact {
     firstname: string
     lastname: string
     phone: string
     mail: string
-    billingAddress?: Address[] // ? ce paramètre signifie "optionnel"
-    deliveryAdress?: Address[]
-    headOfficeAddress?: Address[]
+    billingAddress?: IAddress[] // ? ce paramètre signifie "optionnel"
+    deliveryAdress?: IAddress[]
+    headOfficeAddress?: IAddress[]
 }
 
-interface Address {
+interface IAddress {
     postalCode: string
     city: string
     addressLine1: string
     addressLine2: string
 }
-interface Carrier {
+interface ICarrier {
     name: string
-    contact: Contact[]
+    contact: IContact[]
 }
