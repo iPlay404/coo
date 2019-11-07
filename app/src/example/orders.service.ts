@@ -4,15 +4,22 @@ import {
     setAsync,
 } from '../../utils/storage'
 import IOrder from './orders.interface'
+import OrderBuilder from './orders.builder'
 
 export default class OrderService {
-    //la classe orderservice contient des fonctions de traitement
+    // la classe orderservice contient des fonctions de traitement
 
+    /*
+    orderBuilder = new OrderBuilder()
+
+    const builderCarrier = this.orderBuilder.addCarrier()
+    const builderContact = this.orderBuilder.addContact()
+    const builderPackage = this.orderBuilder.addPackage()
+
+    const getBuilder = this.orderBuilder.getOrder()
+    */
     public parseJSON(str: string) {
-        JSON.parse(str)
-    }
-    public createOrder() {
-        // on passe le contenu de create (dans le controller) ici sauf la premire et la derniere ligne
+        return JSON.parse(str)
     }
 
     /** -------------------------------------------------------------------------
@@ -21,7 +28,7 @@ export default class OrderService {
      */
     public getAll = async () => {
         const res: string = await getAsync('orders')
-        const orders: IOrder[] | [] = JSON.parse(res) || []
+        const orders: IOrder[] | [] = this.parseJSON(res) || []
         return orders
     }
 
@@ -32,9 +39,9 @@ export default class OrderService {
     public create = async (orderInformation: any) => {
         const currentOrder: any = orderInformation
         const rawOrders: string = await getAsync('orders')
-        const orders: IOrder[] | [] = JSON.parse(rawOrders) || []
+        const orders: IOrder[] | [] = this.parseJSON(rawOrders) || []
 
-        const sortedOrders: IOrder[] | [] = orders.sort((previous: any, current: any) => {
+        const sortedOrders: IOrder[] | [] = orders.sort((previous: IOrder, current: IOrder) => {
             return current.id - previous.id
         })
 
@@ -67,7 +74,7 @@ export default class OrderService {
     public getID = async (idOrder: number) => {
         const id = Number(idOrder)
         const rawOrders: string = await getAsync('orders')
-        const orders: IOrder[] | [] = JSON.parse(rawOrders) || []
+        const orders: IOrder[] | [] = this.parseJSON(rawOrders) || []
 
         // tslint:disable-next-line: triple-equals
         const foundOrder: IOrder = orders.find((order) => order.id == id)
@@ -88,7 +95,7 @@ export default class OrderService {
         const id = Number(orderInformation.params.id)
 
         const rawOrders: string = await getAsync('orders')
-        const orders = JSON.parse(rawOrders) || []
+        const orders = this.parseJSON(rawOrders) || []
         // tslint:disable-next-line: triple-equals
         const orderToUpdate = orders.find((order: any) => order.id == id)
 
@@ -116,7 +123,7 @@ export default class OrderService {
     public deleteID = async (idOrder: number) => {
         const id = Number(idOrder)
         const rawOrders: string = await getAsync('orders')
-        const orders: IOrder[] | [] = JSON.parse(rawOrders) || []
+        const orders: IOrder[] | [] = this.parseJSON(rawOrders) || []
         // tslint:disable-next-line: triple-equals
         const orderToDelete: IOrder | null = orders.find((order) => order.id == id)
 
